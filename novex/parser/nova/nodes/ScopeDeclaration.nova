@@ -2,30 +2,7 @@ package "novex/parser/nova/nodes"
 
 import "novex/astro/util/Location"
 
-trait ScopeDeclaration extends Node {
-    visible Scope scope
-    
-    visible Scope parentScope => parentWithScope.scope
-    visible Bool isWithinScope => parentScope != null
-    
-    visible Node parentWithScope {
-        get {
-            if (!parent) return null
-            
-            return parent.containsScope ? parent : parent.parentWithScope
-        }
-        
-        no set
-    }
-    
-    // public addGlobalNode(Node child) => super.addGlobalNode(child) {
-    //     if (child.class.isOfType(ExternalBlock)) {
-            
-    //     }
-    // }
-    
-    visible Bool containsScope => scope != null
-    
-    public parseStatement(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) =>
+trait ScopeDeclarationParser extends NodeParser {
+    public static parseStatement(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) =>
         scope.parseStatement(input, this, location, require)
 }
