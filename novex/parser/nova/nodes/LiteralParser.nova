@@ -10,21 +10,7 @@ import "novex/astro/util/CompilerStringFunctions"
 /// author: Braden Steffaniak
 /// since: 
 /// version: 
-class Literal extends Value implements Accessible {
-    public String value
-    
-    /// Create a new Literal node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the Literal node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID) {
-        super(parent, location)
-        
-        
-    }
-    
+class LiteralParser extends ValueParser implements AccessibleParser {
     /// Parse the given input into a Literal node. If the input cannot be parsed
     /// into a Literal node, null is returned.
     /// 
@@ -49,7 +35,7 @@ class Literal extends Value implements Accessible {
             node.type = Type.parse(type)
             node.value = input
             
-            if (node.formatValue()) {
+            if (formatValue(node)) {
                 return node
             }
         }
@@ -69,13 +55,11 @@ class Literal extends Value implements Accessible {
         }
     }
     
-    formatValue() -> Bool {
-        if (type.name == "String") {
+    static formatValue(Literal node) -> Bool {
+        if (node.type.name == "String") {
             
         }
         
         return true
     }
-    
-    public writeNova() => value + writeArrayAccess() + writeAccessedNodes()
 }
