@@ -12,19 +12,7 @@ import "novex/astro/util/CompilerStringFunctions"
 /// since: 
 /// version: 
 [AutoFinal]
-class TraitDeclaration extends ClassDeclaration {
-    visible String identifier => "trait"
-    
-    /// Create a new TraitDeclaration node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the TraitDeclaration node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID) {
-        super(parent, location)
-    }
-    
+class TraitDeclarationParser extends ClassDeclarationParser {
     /// Parse the given input into a TraitDeclaration node. If the input cannot be parsed
     /// into a TraitDeclaration node, null is returned.
     /// 
@@ -41,7 +29,7 @@ class TraitDeclaration extends ClassDeclaration {
     ///           be parsed.
     /// return:   The parsed TraitDeclaration node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> TraitDeclaration => null {
-        let class = ClassDeclaration.parse(input, "trait", parent, location, require)
+        let class = ClassDeclarationParser.parse(input, "trait", parent, location, require)
         
         if (class) {
             let node = new TraitDeclaration(parent, location)
