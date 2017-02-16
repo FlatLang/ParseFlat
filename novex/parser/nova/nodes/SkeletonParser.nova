@@ -12,17 +12,7 @@ import "novex/astro/util/CompilerStringFunctions"
 /// since: 
 /// version: 
 [AutoFinal]
-class Skeleton extends Node {
-    /// Create a new Skeleton node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the Skeleton node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID) {
-        super(parent, location)
-    }
-    
+class SkeletonParser extends NodeParser {
     /// Parse the given input into a Skeleton node. If the input cannot be parsed
     /// into a Skeleton node, null is returned.
     /// 
