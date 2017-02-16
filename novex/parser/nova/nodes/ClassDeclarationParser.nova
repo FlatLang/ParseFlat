@@ -24,90 +24,8 @@ import "novex/astro/util/CompilerStringFunctions"
 /// author: Braden Steffaniak
 /// since: 
 /// version: 
-class ClassDeclaration extends InstanceDeclaration implements Abstractable, GenericCompatible {
-    visible String identifier => "class"
-    
-    visible ClassDeclaration parentClass => this
-    
-    visible String location =>
-        parentFile.packageDeclaration.location ?
-            parentFile.packageDeclaration.location + "/" + name :
-            name
-    
-    public Type extendedClass
-    public Type[] implementedInterfaces = new Type[0]
-    
-    public FieldDeclaration[] fields = new FieldDeclaration[]
-    public FunctionDeclaration[] functions = new FunctionDeclaration[]
-    
-    public immutable Constructor[] constructors => functions.filter({ _.class.isOfType(Constructor) })
-    
-    visible ArrayBracketOverload arrayBracketOverload
-    
-    visible Bool isPrivate => visibility.count > 0 && super.isPrivate
-    visible Bool isPublic => visibility.count == 0 || super.isPublic
-    
-    /// Create a new ClassDeclaration node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the ClassDeclaration node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID) {
-        super(parent, location)
-        
-        genericParameters = new GenericParameter[0]
-    }
-    
-    public addChild(Node child) {
-        if (addGlobalNode(child)) {
-            
-        } else if (child.class.isOfType(FieldDeclaration)) {
-            fields.add(child)
-        } else if (child.class.isOfType(FunctionDeclaration)) {
-            functions.add(child)
-        } else if (child.class.isOfType(ArrayBracketOverload)) {
-            if (!arrayBracketOverload) {
-                arrayBracketOverload = child
-            } else {
-                SyntaxErrorException("Array bracket overload already declared for class '#location'", child)
-            }
-        } else {
-            SyntaxMessage.error("Statement '#child' used in wrong context", child)
-        }
-        
-        super.addChild(child)
-    }
-    
-    public replace(Node toReplace, Node replacement) -> Bool =>
-        toReplace.class.isOfType(FieldDeclaration) &&
-            fields.replace((FieldDeclaration)toReplace, (FieldDeclaration)replacement) ||
-        toReplace.class.isOfType(FunctionDeclaration) &&
-            functions.replace((FunctionDeclaration)toReplace, (FunctionDeclaration)replacement)
-    
-    public findCompatibleFunctions(String name, Value[] argumentTypes = null) =>
-        functions.filter(func => {
-            func.name.equals(name) &&
-            (!argumentTypes || func.compatibleArguments(argumentTypes))
-        })
-    
-    public findFunction(String name, Bool searchAncestors = true) -> FunctionDeclaration => null {
-        FunctionDeclaration function
-        
-        if (function = functions.firstWhere({ _.name.equals(name) })) {
-            return function
-        }
-        
-        if (searchAncestors) {
-            if (function = extendedClass?.getClass(parentFile)?.findFunction(name)) {
-                return function
-            } else if (function = implementedInterfaces.firstNonNull({ _.getClass(parentFile)?.findFunction(name) })) {
-                return function
-            }
-        }
-    }
-    
-    public parseStatement(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Node {
+class ClassDeclarationParser extends InstanceDeclarationParser implements GenericCompatibleParser {
+    public static parseStatement(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Node {
         Node node = null
         
         until (node) {
@@ -118,10 +36,6 @@ class ClassDeclaration extends InstanceDeclaration implements Abstractable, Gene
         }
         
         return node
-    }
-    
-    public generateTemporaryScopeNode() -> Node {
-        return new BodyFunction(this)
     }
     
     /// Parse the given input into a ClassDeclaration node. If the input cannot be parsed
@@ -171,36 +85,34 @@ class ClassDeclaration extends InstanceDeclaration implements Abstractable, Gene
         }
     }
     
-    parseModifiers(String input, Int index, Bool require) -> Bool {
-        var modifiers = input.substring(end: index).trim()
+    static parseModifiers(VariableDeclaration node, String input, Int index, Bool require) => true {
+        let modifiers = input.substring(end: index).trim()
         
-        if (!parseModifiers(modifiers)) {
-            var invalid = getInvalidModifiers(modifiers)
+        if (!parseModifiers(node, modifiers)) {
+            let invalid = getInvalidModifiers(node, modifiers)
             
-            SyntaxMessage.errorIf("Invalid modifier#{invalid.count != 1 ? "s" : ""}: '#{invalid.join("', '")}'", this, require)
+            SyntaxMessage.errorIf("Invalid modifier#{invalid.count != 1 ? "s" : ""}: '#{invalid.join("', '")}'", node, require)
             
             return false
         }
-        
-        return true
     }
     
-    parseName(String name, Bool require) => true {
-        if (genericParameters.count > 0) {
+    static parseName(ClassDeclaration node, String name, Bool require) => true {
+        if (node.genericParameters.count > 0) {
             name = name.substring(end: name.indexOf('<')).trim()
         }
         
         if (name.isIdentifier) {
-            this.name = name
-            this.type = new Type(name)
+            node.name = name
+            node.type = new Type(name)
         } else {
-            SyntaxMessage.errorIf("Invalid class name '#name'", this, require)
+            SyntaxMessage.errorIf("Invalid class name '#name'", node, require)
             
             return false
         }
     }
     
-    parseInheritence(String input, Int nameEndIndex, Bool require) -> Bool {
+    static parseInheritence(ClassDeclaration node, String input, Int nameEndIndex, Bool require) -> Bool {
         var extension       = input.substring(input.nextNonWhitespaceIndex(nameEndIndex + 1, defaultReturnValue: input.count))
         var implementations = ""
         var implementsIndex = extension.nextWordIndex("implements")
@@ -210,17 +122,17 @@ class ClassDeclaration extends InstanceDeclaration implements Abstractable, Gene
             extension       = extension.substring(end:   implementsIndex).trim()
         }
         
-        return parseExtension(extension, require) && parseImplementations(implementations, require)
+        return parseExtension(node, extension, require) && parseImplementations(node, implementations, require)
     }
     
-    parseExtension(String extension, Bool require) -> Bool {
+    static parseExtension(ClassDeclaration node, String extension, Bool require) -> Bool {
         if (extension.startsWith(/extends\s+/)) {
             extension = extension.substring("extends ".count).trim()
             
-            extendedClass = Type.parse(extension, this)
+            node.extendedClass = Type.parse(extension, node)
             
-            if (!extendedClass.name.isIdentifier) {
-                SyntaxMessage.errorIf("Extended class '#extension' is not a valid type", this, require)
+            if (!node.extendedClass.name.isIdentifier) {
+                SyntaxMessage.errorIf("Extended class '#extension' is not a valid type", node, require)
                 
                 return false
             }
@@ -231,12 +143,12 @@ class ClassDeclaration extends InstanceDeclaration implements Abstractable, Gene
         return extension.count == 0
     }
     
-    parseImplementations(String implementations, Bool require) -> Bool {
+    static parseImplementations(ClassDeclaration node, String implementations, Bool require) -> Bool {
         if (implementations.startsWith(/implements\s+/)) {
-            implementedInterfaces = implementations.substring("implements ".count).splitAtCommas(searchGenerics: true).map({ Type.parse(_, this) })
+            node.implementedInterfaces = implementations.substring("implements ".count).splitAtCommas(searchGenerics: true).map({ Type.parse(_, this) })
             
             if (implementedInterfaces.any(i => { !i || !i.name.isIdentifier })) {
-                var invalid = implementedInterfaces.filter(i => { i && !i.name.isIdentifier })
+                var invalid = node.implementedInterfaces.filter(i => { i && !i.name.isIdentifier })
                 
                 SyntaxMessage.errorIf("Invalid interface type#{invalid.count != 1 ? "s" : ""}: '#{invalid.join("', '")}'", this, require)
                 
@@ -250,54 +162,11 @@ class ClassDeclaration extends InstanceDeclaration implements Abstractable, Gene
     }
     
     [Override]
-    public parseModifier(String modifier) -> Bool {
-        if (super.parseModifier(modifier)) return true
-            
-        match (modifier)
-            "abstract" => isAbstract = true
-            default => return false
-        return true
-    }
-    
-    public writeHeader() =>
-        "#identifier #{name}#writeGenericParameters() #writeExtension() #writeImplementedInterfaces()".replace(/\s+/, " ").trim()
-    
-    public writeExtension() =>
-        extendedClass ?
-            "extends #extendedClass" :
-            ""
-    
-    public writeImplementedInterfaces() =>
-        implementedInterfaces.count > 0 ?
-            "implements #{implementedInterfaces.join(", ")}" :
-            ""
-    
-    public writeArrayBracketOverload() =>
-        arrayBracketOverload ?
-            "\n" + arrayBracketOverload.toNova() + "\n" :
-            ""
-    
-    public writeFields() => fields.map({ '\n' + _.toNova() }).join() + (fields.count > 0 ? "\n" : "")
-    public writeFunctions() => functions.map({ '\n' + _.toNova() + '\n' }).join()
-    
-    public toNova() =>
-        writeHeader() + " {" +
-        writeArrayBracketOverload() +
-        writeFields() +
-        writeFunctions() + "}"
-    
-    [Override]
-    public toString() => writeHeader()
-    
-    public cloneTo(ClassDeclaration other) => other {
-        super.cloneTo(other)
-        GenericCompatible.super.cloneTo(other)
-        Abstractable.super.cloneTo(other)
-        
-        other.extendedClass = extendedClass
-        other.implementedInterfaces = implementedInterfaces
-        other.fields = fields
-        other.functions = functions
-        other.arrayBracketOverload = arrayBracketOverload
+    public static parseModifier(VariableDeclaration node, String modifier) => true {
+        if (!super.parseModifier(node, modifier)) {
+            match (modifier)
+                "abstract" => isAbstract = true
+                default => return false
+        }
     }
 }
