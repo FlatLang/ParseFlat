@@ -36,42 +36,8 @@ import "novex/astro/util/CompilerStringFunctions"
 /// author:  Braden Steffaniak
 /// since:   v0.1 Apr 5, 2014 at 10:54:20 PM
 /// version: v0.2.41 Dec 17, 2014 at 7:48:17 PM
-class Scope extends NodeList {
-    private Int id
-    
-    static Class[] LADDER_FORM = [ElseStatement, Catch]
-    
-    visible Int depth {
-        get {
-            Node current = this
-            
-            var depth = 0
-            
-            while (current) {
-                if (current.class.isOfType(ScopeDeclaration)) {
-                    depth++
-                }
-                
-                current = current.parent
-            }
-            
-            return depth
-        }
-        
-        no set
-    }
-    
-    /// Create a new Scope node.
-    /// 
-    /// #example
-    /// 
-    /// parent:   The parent of the Scope node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID) {
-    	super(parent, location)
-    }
-    
-    public parseStatement(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Node {
+class ScopeParser extends NodeListParser {
+    public static parseStatement(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Node {
         Node node = null
         
         until (node) {
@@ -89,32 +55,5 @@ class Scope extends NodeList {
         }
         
         return node
-    }
-    
-    public generateTemporaryScopeNode() -> Node {
-        return new Scope(this)
-    }
-    
-    printPrecedingWhitespace(Node child) =>
-        LADDER_FORM.contains(child.class) ? " " : "\n"
-    
-    childToNova(Node child) =>
-        printPrecedingWhitespace(child) + child.toNova()
-    
-    public writeNova() => writeNova(false)
-    public writeNova(Bool condense) -> String {
-        var output = "{"
-        
-        if (condense && children.count == 1) {
-            output += " " + children.first.toNova() + " "
-        } else if (children.count > 1) {
-            output += children.map(childToNova).join()
-        }
-        
-        if (!condense && children.count > 0) {
-            output += "\n"
-        }
-        
-        return output + "}"
     }
 }
