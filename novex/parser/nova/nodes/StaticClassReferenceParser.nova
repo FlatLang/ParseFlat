@@ -10,20 +10,7 @@ import "novex/astro/util/CompilerStringFunctions"
 /// author: Braden Steffaniak
 /// since: 
 /// version: 
-class StaticClassReference extends Identifier implements Accessible {
-    /// Create a new StaticClassReference node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the StaticClassReference node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID, String name = null) {
-        super(parent, location)
-        
-        this.name = name
-        this.type = Type.parse(name)
-    }
-    
+class StaticClassReferenceParser extends IdentifierParser implements AccessibleParser {
     /// Parse the given input into a StaticClassReference node. If the input cannot be parsed
     /// into a StaticClassReference node, null is returned.
     /// 
