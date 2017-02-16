@@ -10,21 +10,7 @@ import "novex/astro/util/CompilerStringFunctions"
 /// author: Braden Steffaniak
 /// since: 
 /// version: 
-class Return extends Node {
-    visible Value value
-    
-    /// Create a new Return node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the Return node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID, Value value = null) {
-        super(parent, location)
-        
-        this.value = value
-    }
-    
+class ReturnParser extends NodeParser {
     /// Parse the given input into a Return node. If the input cannot be parsed
     /// into a Return node, null is returned.
     /// 
@@ -41,7 +27,7 @@ class Return extends Node {
     ///           be parsed.
     /// return:   The parsed Return node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Return => null {
-        if (input.nextWord() == "return") {
+        if (input.firstWord == "return") {
             var node = new Return(parent, location)
             var contents = input.substring("return".count).trim()
             
@@ -58,11 +44,4 @@ class Return extends Node {
             return node
         }
     }
-    
-    public writeValue() =>
-        value ?
-            value.toNova() :
-            ""
-    
-    public writeNova() => "return #writeValue()".trim()
 }
