@@ -12,17 +12,7 @@ import "novex/astro/util/CompilerStringFunctions"
 /// since: 
 /// version: 
 [AutoFinal]
-class SingleLineComment extends Comment {
-    /// Create a new SingleLineComment node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the SingleLineComment node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID, public String contents = null) {
-        super(parent, location, contents)
-    }
-    
+class SingleLineCommentParser extends CommentParser {
     /// Parse the given input into a SingleLineComment node. If the input cannot be parsed
     /// into a SingleLineComment node, null is returned.
     /// 
