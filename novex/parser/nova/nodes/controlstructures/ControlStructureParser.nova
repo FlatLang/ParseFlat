@@ -1,4 +1,4 @@
-package "novex/astro/tree/nodes/controlstructures"
+package "novex/parser/nova/nodes/controlstructures"
 
 import "novex/astro/util/Location"
 import "novex/astro/tree/nodes/Node"
