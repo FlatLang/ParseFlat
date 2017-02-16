@@ -12,19 +12,7 @@ import "novex/astro/util/CompilerStringFunctions"
 /// since: 
 /// version: 
 [AutoFinal]
-class Comment extends Node {
-    public String contents
-    
-    /// Create a new Comment node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the Comment node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID, public String contents = null) {
-        super(parent, location)
-    }
-    
+class CommentParser extends NodeParser {
     /// Parse the given input into a Comment node. If the input cannot be parsed
     /// into a Comment node, null is returned.
     /// 
