@@ -1,4 +1,4 @@
-package "novex/astro/tree/nodes"
+package "novex/parser/nova/nodes"
 
 import "novex/astro/SyntaxErrorException"
 import "novex/astro/InvalidParseException"
@@ -12,19 +12,7 @@ import "novex/astro/util/CompilerStringFunctions"
 /// since: 
 /// version: 
 [AutoFinal]
-class Cast extends Value {
-    public var Value value
-    
-    /// Create a new Cast node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the Cast node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID) {
-        super(parent, location)
-    }
-    
+class CastParser extends ValueParser {
     /// Parse the given input into a Cast node. If the input cannot be parsed
     /// into a Cast node, null is returned.
     /// 
@@ -49,9 +37,9 @@ class Cast extends Value {
             if (end < 0) {
                 toss new InvalidParseException("Failed to find ending parenthesis", node)
             } else {
-                if (!node.parseType(let contents = input.substring(1, end).trim())) {
+                if (!parseType(node, let contents = input.substring(1, end).trim())) {
                     toss new InvalidParseException("Failed to parse cast type '#contents'")
-                } else if (!node.parseValue(let value = input.substring(end + 1).trim())) {
+                } else if (!parseValue(node, let value = input.substring(end + 1).trim())) {
                     toss new InvalidParseException("Failed to parse casted value '#value'")
                 } else {
                     return node
@@ -60,7 +48,5 @@ class Cast extends Value {
         }
     }
     
-    parseValue(String input) => value = Value.parse(input, this)
-    
-    public writeNova() => "(#{writeType()})#value.toNova()"
+    static parseValue(Cast node, String input) => node.value = Value.parse(input, node)
 }
