@@ -1,4 +1,4 @@
-package "novex/astro/tree/nodes"
+package "novex/parser/nova/nodes"
 
 import "nova/datastruct/Tuple2"
 
@@ -18,36 +18,7 @@ import "novex/astro/tree/nodes/functions/Instantiation"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-class Value extends Node {
-    visible static final Byte VALUE = 1, POINTER = 2, REFERENCE = 3, DOUBLE_POINTER = 4
-    
-    public ArrayAccess arrayAccess
-    
-    public Accessible returnedNode => this
-    
-    public Type type <=> type
-    
-    public Bool isAssignable => this.class.isOfType(Assignable)
-    
-    public ClassDeclaration typeClass =>
-        type ?
-            parentFile.imports.firstWhere(x => { x.className && x.className == type.name })?.classDeclaration :
-            null
-    
-    visible Bool isPrimitiveType => type.isPrimitiveType
-    
-    /// Create a new Value node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the Value node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID, Type type = null) {
-        super(parent, location)
-        
-        this.type = type
-    }
-    
+class ValueParser extends NodeParser {
     /// Parse the given input into a Value node. If the input cannot be parsed
     /// into a Value node, null is returned.
     /// 
@@ -72,7 +43,7 @@ class Value extends Node {
         
         if (let value = parseValue(input, parent, location, require)) {
             if (arrayData.item1) {
-                value.arrayAccess = ArrayAccess.parse(arrayData.item1, value)
+                value.arrayAccess = ArrayAccessParser.parse(arrayData.item1, value)
             }
             
             return value
@@ -83,19 +54,19 @@ class Value extends Node {
         var node = null
         
         until (node.class.isOfType(Value)) {
-            node = Literal.parse(input, parent, location, require)
-            node = Identifier.parse(input, parent, location, require)
-            node = Cast.parse(input, parent, location, require)
-            node = Priority.parse(input, parent, location, require)
-            node = Accessible.parseDotAccess(input, parent, require)
-            node = NumericRange.parse(input, parent, location, require)
-            node = ArrayInstantiation.parse(input, parent, location, require)
-            node = Instantiation.parse(input, parent, location, require)
-            node = FunctionCall.parse(input, parent, location, require)
-            node = ElvisOperation.parse(input, parent, location, require)
-            node = TernaryOperation.parse(input, parent, location, require)
-            node = UnaryOperation.parse(input, parent, location, require)
-            node = Operation.parse(input, parent, location, require)
+            node = LiteralParser.parse(input, parent, location, require)
+            node = IdentifierParser.parse(input, parent, location, require)
+            node = CastParser.parse(input, parent, location, require)
+            node = PriorityParser.parse(input, parent, location, require)
+            node = AccessibleParser.parseDotAccess(input, parent, require)
+            node = NumericRangeParser.parse(input, parent, location, require)
+            node = ArrayInstantiationParser.parse(input, parent, location, require)
+            node = InstantiationParser.parse(input, parent, location, require)
+            node = FunctionCallParser.parse(input, parent, location, require)
+            node = ElvisOperationParser.parse(input, parent, location, require)
+            node = TernaryOperationParser.parse(input, parent, location, require)
+            node = UnaryOperationParser.parse(input, parent, location, require)
+            node = OperationParser.parse(input, parent, location, require)
             toss new InvalidParseException("Could not parse value '#input'")
             return null
         }
@@ -103,16 +74,6 @@ class Value extends Node {
         return node
     }
     
-    public parseType(String input) =>
-        input && (type = Type.parse(input, this))
-    
-    public writeType() => type.toNova()
-    public writeArrayAccess() => arrayAccess ? arrayAccess.toNova() : ""
-    
-    public cloneTo(Value other) => other {
-        super.cloneTo(other)
-        
-        other.arrayAccess = arrayAccess
-        other.type = type
-    }
+    public parseType(Value node, String input) =>
+        input && (node.type = TypeParser.parse(input, node))
 }
