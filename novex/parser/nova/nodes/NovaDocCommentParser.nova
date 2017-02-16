@@ -12,17 +12,7 @@ import "novex/astro/util/CompilerStringFunctions"
 /// since: 
 /// version: 
 [AutoFinal]
-class NovaDocComment extends Comment {
-    /// Create a new NovaDocComment node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the NovaDocComment node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID, public String contents = null) {
-        super(parent, location, contents)
-    }
-    
+class NovaDocCommentParser extends CommentParser {
     /// Parse the given input into a NovaDocComment node. If the input cannot be parsed
     /// into a NovaDocComment node, null is returned.
     /// 
