@@ -11,19 +11,7 @@ import "novex/astro/util/CompilerStringFunctions"
 /// author: Braden Steffaniak
 /// since: 
 /// version: 
-class Identifier extends Value implements Accessible, Assignable {
-    public String name
-    
-    /// Create a new Identifier node.
-    /// 
-    /// #exampleInputs
-    /// 
-    /// parent:   The parent of the Identifier node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID, public String name = null) {
-        super(parent, location)
-    }
-    
+class IdentifierParser extends ValueParser implements AccessibleParser {
     /// Parse the given input into a Identifier node. If the input cannot be parsed
     /// into a Identifier node, null is returned.
     /// 
@@ -43,13 +31,5 @@ class Identifier extends Value implements Accessible, Assignable {
         if (input.isIdentifier) {
             return new Identifier(parent, location, input)
         }
-    }
-    
-    public writeNova() => name + writeArrayAccess() + writeAccessedNodes()
-    
-    public cloneTo(Identifier other) => other {
-        super.cloneTo(other)
-        
-        other.name = name
     }
 }
