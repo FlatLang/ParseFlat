@@ -7,20 +7,7 @@ import "novex/astro/SyntaxMessage"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-class Package extends Node {
-    public String location
-    
-    static HashMap<String, Array<NovaFile>> filesMap = new HashMap()
-    
-    visible NovaFile[] files => filesMap[location]
-    
-    public construct(Node parent = null, Location location = Location.INVALID) {
-        super(parent, location)
-    }
-    
-    public static generateDefaultPackage(Node parent = null, Location location = Location.INVALID) =>
-        new Package(parent, location)
-    
+class PackageParser extends NodeParser {
     /// Parse the given input into a Package node. If the input cannot be parsed
     /// into a Package node, null is returned.
     /// 
@@ -37,7 +24,7 @@ class Package extends Node {
     ///           be parsed.
     /// return:   The parsed Package node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Package => null {
-        if (input.nextWordIndex("package") == 0) {
+        if (input.firstWord == "package") {
             var node = new Package(parent, location)
             
             var quoteStart = input.nextNonWhitespaceIndex("package".count)
@@ -64,9 +51,4 @@ class Package extends Node {
             }
         }
     }
-    
-    validateLocation() => true
-    validateAlias() => true
-    
-    public writeNova() => location ? "package \"#location\"" : ""
 }
