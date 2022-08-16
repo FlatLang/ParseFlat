@@ -6,21 +6,21 @@ import "novex/astro/tree/nodes/operations/Assignable"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @Value extension that represents 
+/// @Value extension that represents
 ///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 class IdentifierParser extends ValueParser implements AccessibleParser {
     /// Parse the given input into a Identifier node. If the input cannot be parsed
     /// into a Identifier node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
     ///      * correctGrammar
     ///      * INCORrect_grammaR_but_123123STILL_workz
     ///      * identifierName4
-    /// 
+    ///
     /// input:    The input string to parse into a Identifier instance.
     /// parent:   The parent of the Identifier node.
     /// location: The location of the input text in the source file.
@@ -29,7 +29,7 @@ class IdentifierParser extends ValueParser implements AccessibleParser {
     /// return:   The parsed Identifier node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Identifier => null {
         if (input.isIdentifier) {
-            return new Identifier(parent, location, input)
+            return Identifier(parent, location, input)
         }
     }
 }

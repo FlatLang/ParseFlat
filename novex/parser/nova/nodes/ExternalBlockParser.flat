@@ -8,22 +8,22 @@ import "novex/astro/util/Location"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @Node extension that represents 
+/// @Node extension that represents
 ///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 [AutoFinal]
 class ExternalBlockParser extends NodeParser implements ScopeDeclarationParser {
     /// Parse the given input into a ExternalBlock node. If the input cannot be parsed
     /// into a ExternalBlock node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///      * 
-    ///      * 
-    ///      * 
-    /// 
+    ///      *
+    ///      *
+    ///      *
+    ///
     /// input:    The input string to parse into a ExternalBlock instance.
     /// parent:   The parent of the ExternalBlock node.
     /// location: The location of the input text in the source file.
@@ -32,22 +32,22 @@ class ExternalBlockParser extends NodeParser implements ScopeDeclarationParser {
     /// return:   The parsed ExternalBlock node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> ExternalBlock => null {
         if (input.firstWord == "external") {
-            let targets = input.substring("external".count).trim().split(new Pattern("\\s*,\\s*")).filter({ _.count > 0 })
-            
+            let targets = input.substring("external".count).trim().split(Pattern("\\s*,\\s*")).filter({ _.count > 0 })
+
             // TODO: make it check the list of available targets
             if (targets.all({ _.isIdentifier })) {
-                let node = new ExternalBlock(parent, location, targets)
-                
+                let node = ExternalBlock(parent, location, targets)
+
                 let iterator = parent.parentFile.statements
                 let remaining = iterator.remainingSource
-                
+
                 if ((let end = remaining.findCharOnTopLevel('}')) > 0) {
                     node.contents = iterator.source.substring(iterator.position, iterator.position + end).trim()
-                    
+
                     iterator.skipForward(end + 1)
                     iterator.beginsScope = false
                     iterator.endsScope = false
-                    
+
                     return node
                 }
             }

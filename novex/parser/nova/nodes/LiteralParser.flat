@@ -5,21 +5,21 @@ import "novex/astro/util/Location"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @Value extension that represents 
-/// 
+/// @Value extension that represents
+///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 class LiteralParser extends ValueParser implements AccessibleParser {
     /// Parse the given input into a Literal node. If the input cannot be parsed
     /// into a Literal node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///      * 
-    ///      * 
-    ///      * 
-    /// 
+    ///      *
+    ///      *
+    ///      *
+    ///
     /// input:    The input string to parse into a Literal instance.
     /// parent:   The parent of the Literal node.
     /// location: The location of the input text in the source file.
@@ -28,19 +28,19 @@ class LiteralParser extends ValueParser implements AccessibleParser {
     /// return:   The parsed Literal node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Literal => null {
         var type = getLiteralType(input)
-        
+
         if (type) {
-            var node = new Literal(parent, location)
-            
+            var node = Literal(parent, location)
+
             node.type = Type.parse(type)
             node.value = input
-            
+
             if (formatValue(node)) {
                 return node
             }
         }
     }
-    
+
     static getLiteralType(String input) -> String => null {
         if (input == "null") {
             return "Object"
@@ -54,12 +54,12 @@ class LiteralParser extends ValueParser implements AccessibleParser {
             return "Int"
         }
     }
-    
+
     static formatValue(Literal node) -> Bool {
         if (node.type.name == "String") {
-            
+
         }
-        
+
         return true
     }
 }

@@ -6,22 +6,22 @@ import "novex/astro/util/Location"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @Node extension that represents 
+/// @Node extension that represents
 ///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 [AutoFinal]
 class CastParser extends ValueParser {
     /// Parse the given input into a Cast node. If the input cannot be parsed
     /// into a Cast node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///      * 
-    ///      * 
-    ///      * 
-    /// 
+    ///      *
+    ///      *
+    ///      *
+    ///
     /// input:    The input string to parse into a Cast instance.
     /// parent:   The parent of the Cast node.
     /// location: The location of the input text in the source file.
@@ -30,23 +30,23 @@ class CastParser extends ValueParser {
     /// return:   The parsed Cast node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Cast => null {
         if (input.first == '(') {
-            let node = new Cast(parent, location)
-            
+            let node = Cast(parent, location)
+
             let end = input.findEndingMatch(0, '(', ')')
-            
+
             if (end < 0) {
-                toss new InvalidParseException("Failed to find ending parenthesis", node)
+                toss InvalidParseException("Failed to find ending parenthesis", node)
             } else {
                 if (!parseType(node, let contents = input.substring(1, end).trim())) {
-                    toss new InvalidParseException("Failed to parse cast type '#contents'")
+                    toss InvalidParseException("Failed to parse cast type '#contents'")
                 } else if (!parseValue(node, let value = input.substring(end + 1).trim())) {
-                    toss new InvalidParseException("Failed to parse casted value '#value'")
+                    toss InvalidParseException("Failed to parse casted value '#value'")
                 } else {
                     return node
                 }
             }
         }
     }
-    
+
     static parseValue(Cast node, String input) => node.value = Value.parse(input, node)
 }

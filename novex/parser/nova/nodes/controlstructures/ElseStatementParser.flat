@@ -8,14 +8,14 @@ import "novex/astro/util/Location"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @ControlStructure extension that represents 
+/// @ControlStructure extension that represents
 ///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 class ElseStatement extends ControlStructure {
     visible IfStatement inlineIf
-    
+
     public Scope scope => inlineIf ? inlineIf.scope : scope {
         set {
             if (inlineIf) {
@@ -25,26 +25,26 @@ class ElseStatement extends ControlStructure {
             }
         }
     }
-    
+
     /// Create a new ElseStatement node.
-    /// 
+    ///
     /// #exampleInputs
-    /// 
+    ///
     /// parent:   The parent of the ElseStatement node.
     /// location: The location of the input text in the source file.
     public construct(Node parent = null, Location location = Location.INVALID) {
         super(parent, location)
     }
-    
+
     /// Parse the given input into a ElseStatement node. If the input cannot be parsed
     /// into a ElseStatement node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///      * 
-    ///      * 
-    ///      * 
-    /// 
+    ///      *
+    ///      *
+    ///      *
+    ///
     /// input:    The input string to parse into a ElseStatement instance.
     /// parent:   The parent of the ElseStatement node.
     /// location: The location of the input text in the source file.
@@ -54,31 +54,31 @@ class ElseStatement extends ControlStructure {
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> ElseStatement => null {
         if (input.nextWord() == "else") {
             var contents = input.substring("else".count).trim()
-            
-            var node = new ElseStatement(parent, location)
-            
+
+            var node = ElseStatement(parent, location)
+
             if (node.parseContents(input, contents)) {
                 return node
             }
         }
     }
-    
+
     parseContents(String input, String contents) => true {
         if (contents.nextWord() == "if") {
             inlineIf = IfStatement.parse(contents, this)
-            
+
             if (!inlineIf) {
                 SyntaxMessage.error("Unable parse else if statement '#input'", this, throwException: false)
-                
+
                 return false
             }
         } else if (contents.count > 0) {
             SyntaxMessage.error("Unable parse else statement '#input'", this, throwException: false)
-            
+
             return false
         }
     }
-    
+
     public writeNova() =>
         "else " + (inlineIf ? inlineIf.toNova() : scope.toNova())
 }

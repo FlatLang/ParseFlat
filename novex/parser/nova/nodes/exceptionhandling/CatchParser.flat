@@ -10,38 +10,38 @@ import "novex/astro/util/Location"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @Node extension that represents 
+/// @Node extension that represents
 ///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 class Catch extends Node implements ScopeDeclaration {
     visible Bool soft = false
-    
+
     visible Type exception
     visible String variable
-    
+
     /// Create a new Catch node.
-    /// 
+    ///
     /// #exampleInputs
-    /// 
+    ///
     /// parent:   The parent of the Catch node.
     /// location: The location of the input text in the source file.
     public construct(Node parent = null, Location location = Location.INVALID) {
         super(parent, location)
-        
-        scope = new Scope(this, location)
+
+        scope = Scope(this, location)
     }
-    
+
     /// Parse the given input into a Catch node. If the input cannot be parsed
     /// into a Catch node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///      * 
-    ///      * 
-    ///      * 
-    /// 
+    ///      *
+    ///      *
+    ///      *
+    ///
     /// input:    The input string to parse into a Catch instance.
     /// parent:   The parent of the Catch node.
     /// location: The location of the input text in the source file.
@@ -50,16 +50,16 @@ class Catch extends Node implements ScopeDeclaration {
     /// return:   The parsed Catch node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Catch => null {
         if (input.nextWord() == "catch") {
-            var node = new Catch(parent, location)
-            
+            var node = Catch(parent, location)
+
             var contents = input.substring("catch".count).trim()
-            
+
             if (contents.nextWord() == "all") {
                 node.soft = true
-                
+
                 contents = contents.substring("all".count).trim()
             }
-            
+
             if (contents.count > 0) {
                 if (contents.first == '(') {
                     if (contents.last == ')') {
@@ -68,24 +68,24 @@ class Catch extends Node implements ScopeDeclaration {
                         return null
                     }
                 }
-                
+
                 if (!node.parseException(contents)) {
-                    toss new InvalidParseException("Unable to parse exception '#contents'", node)
+                    toss InvalidParseException("Unable to parse exception '#contents'", node)
                 } else {
                     return node
                 }
             }
         }
     }
-    
+
     parseException(String input) => true {
         var values = input.splitValues()
-        
+
         match (values.count) {
             2 => {
                 variable = values[1]
-                
-                fallthrough  
+
+                fallthrough
             }
             1 => {
                 return (exception = Type.parse(values[0])) != null
@@ -93,10 +93,10 @@ class Catch extends Node implements ScopeDeclaration {
             default => return false
         }
     }
-    
+
     public writeException() =>
         exception.toNova() + (variable ? " #variable" : "")
-    
+
     public writeNova() =>
         "catch #{soft ? "all" : ""}".trim() + " (#writeException()) #scope.toNova()"
 }

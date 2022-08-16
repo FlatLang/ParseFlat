@@ -5,21 +5,21 @@ import "novex/astro/util/Location"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @Node extension that represents 
+/// @Node extension that represents
 ///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 class ReturnParser extends NodeParser {
     /// Parse the given input into a Return node. If the input cannot be parsed
     /// into a Return node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///      * 
-    ///      * 
-    ///      * 
-    /// 
+    ///      *
+    ///      *
+    ///      *
+    ///
     /// input:    The input string to parse into a Return instance.
     /// parent:   The parent of the Return node.
     /// location: The location of the input text in the source file.
@@ -28,19 +28,19 @@ class ReturnParser extends NodeParser {
     /// return:   The parsed Return node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Return => null {
         if (input.firstWord == "return") {
-            var node = new Return(parent, location)
+            var node = Return(parent, location)
             var contents = input.substring("return".count).trim()
-            
+
             if (contents.count > 0) {
                 node.value = Value.parse(contents, node)
-                
+
                 if (!node.value) {
-                    toss new InvalidParseException("Invalid return value '#contents'", node)
-                    
+                    toss InvalidParseException("Invalid return value '#contents'", node)
+
                     return null
                 }
             }
-            
+
             return node
         }
     }

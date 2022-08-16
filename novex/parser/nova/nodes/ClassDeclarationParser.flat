@@ -19,34 +19,34 @@ import "novex/astro/tree/nodes/functions/BodyFunction"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @InstanceDeclaration extension that represents 
+/// @InstanceDeclaration extension that represents
 ///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 class ClassDeclarationParser extends InstanceDeclarationParser implements GenericCompatibleParser {
     public static parseStatement(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Node {
         Node node = null
-        
+
         until (node) {
             node = Constructor.parse(input, this, location, require)
             node = BodyFunction.parse(input, this, location, require)
             node = FieldDeclaration.parse(input, this, location, require)
             node = ArrayBracketOverload.parse(input, this, location, require)
         }
-        
+
         return node
     }
-    
+
     /// Parse the given input into a ClassDeclaration node. If the input cannot be parsed
     /// into a ClassDeclaration node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
     ///      * class MyClass
     ///      * public class Abc extends MyClass
     ///      * private class Xyz extends Abc implements Multiply, Divide
-    /// 
+    ///
     /// input:    The input string to parse into a ClassDeclaration instance.
     /// parent:   The parent of the ClassDeclaration node.
     /// location: The location of the input text in the source file.
@@ -55,27 +55,27 @@ class ClassDeclarationParser extends InstanceDeclarationParser implements Generi
     /// return:   The parsed ClassDeclaration node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) =>
         parse(input, "class", parent, location, require)
-    
+
     public static parse(String input, String identifier, Node parent = null, Location location = Location.INVALID, Bool require = true) -> ClassDeclaration => null {
         if ((let index = input.nextWordIndex(identifier)) >= 0) {
-            let node = new ClassDeclaration(parent, location)
-            
+            let node = ClassDeclaration(parent, location)
+
             if (!node.parseModifiers(input, index, require)) {
                 return null
             }
-            
+
             let nameStartIndex = input.nextNonWhitespaceIndex(index + identifier.count + 1)
             let nameEndIndex = input.nextWhitespaceIndex(nameStartIndex + 1, defaultReturnValue: input.count)
-            
+
             if (nameStartIndex < nameEndIndex) {
                 var name = input.substring(nameStartIndex, nameEndIndex)
-                
+
                 if (!node.parseGenericParameters(name)) {
-                    toss new InvalidParseException("Unable to parse generic parameters for #identifier '#name'", node)
+                    toss InvalidParseException("Unable to parse generic parameters for #identifier '#name'", node)
                 } else if (!node.parseName(name, require)) {
-                    toss new InvalidParseException("Unable to parse name for #identifier '#input'", node)
+                    toss InvalidParseException("Unable to parse name for #identifier '#input'", node)
                 } else if (!node.parseInheritence(input, nameEndIndex, require)) {
-                    toss new InvalidParseException("Unable to parse inheritence for #identifier '#input'", node)
+                    toss InvalidParseException("Unable to parse inheritence for #identifier '#input'", node)
                 } else {
                     return node
                 }
@@ -84,83 +84,83 @@ class ClassDeclarationParser extends InstanceDeclarationParser implements Generi
             SyntaxMessage.error("Invalid #identifier declaration '#input'", parent)
         }
     }
-    
+
     static parseModifiers(VariableDeclaration node, String input, Int index, Bool require) => true {
         let modifiers = input.substring(end: index).trim()
-        
+
         if (!parseModifiers(node, modifiers)) {
             let invalid = getInvalidModifiers(node, modifiers)
-            
+
             SyntaxMessage.errorIf("Invalid modifier#{invalid.count != 1 ? "s" : ""}: '#{invalid.join("', '")}'", node, require)
-            
+
             return false
         }
     }
-    
+
     static parseName(ClassDeclaration node, String name, Bool require) => true {
         if (node.genericParameters.count > 0) {
             name = name.substring(end: name.indexOf('<')).trim()
         }
-        
+
         if (name.isIdentifier) {
             node.name = name
-            node.type = new Type(name)
+            node.type = Type(name)
         } else {
             SyntaxMessage.errorIf("Invalid class name '#name'", node, require)
-            
+
             return false
         }
     }
-    
+
     static parseInheritence(ClassDeclaration node, String input, Int nameEndIndex, Bool require) -> Bool {
         var extension       = input.substring(input.nextNonWhitespaceIndex(nameEndIndex + 1, defaultReturnValue: input.count))
         var implementations = ""
         var implementsIndex = extension.nextWordIndex("implements")
-        
+
         if (implementsIndex >= 0) {
             implementations = extension.substring(start: implementsIndex).trim()
             extension       = extension.substring(end:   implementsIndex).trim()
         }
-        
+
         return parseExtension(node, extension, require) && parseImplementations(node, implementations, require)
     }
-    
+
     static parseExtension(ClassDeclaration node, String extension, Bool require) -> Bool {
         if (extension.startsWith(/extends\s+/)) {
             extension = extension.substring("extends ".count).trim()
-            
+
             node.extendedClass = Type.parse(extension, node)
-            
+
             if (!node.extendedClass.name.isIdentifier) {
                 SyntaxMessage.errorIf("Extended class '#extension' is not a valid type", node, require)
-                
+
                 return false
             }
-            
+
             return true
         }
-        
+
         return extension.count == 0
     }
-    
+
     static parseImplementations(ClassDeclaration node, String implementations, Bool require) -> Bool {
         if (implementations.startsWith(/implements\s+/)) {
             node.implementedInterfaces = implementations.substring("implements ".count).splitAtCommas(searchGenerics: true).map({ Type.parse(_, this) })
-            
+
             if (implementedInterfaces.any(i => { !i || !i.name.isIdentifier })) {
                 var invalid = node.implementedInterfaces.filter(i => { i && !i.name.isIdentifier })
-                
+
                 SyntaxMessage.errorIf("Invalid interface type#{invalid.count != 1 ? "s" : ""}: '#{invalid.join("', '")}'", this, require)
-                
+
                 return false
             }
-            
+
             return true
         }
-        
+
         return implementations.count == 0
     }
-    
+
     [Override]
     public static parseModifier(VariableDeclaration node, String modifier) => true {
         if (!super.parseModifier(node, modifier)) {

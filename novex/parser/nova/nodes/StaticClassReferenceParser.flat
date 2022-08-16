@@ -5,21 +5,21 @@ import "novex/astro/util/Location"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @Node extension that represents 
+/// @Node extension that represents
 ///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 class StaticClassReferenceParser extends IdentifierParser implements AccessibleParser {
     /// Parse the given input into a StaticClassReference node. If the input cannot be parsed
     /// into a StaticClassReference node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///      * 
-    ///      * 
-    ///      * 
-    /// 
+    ///      *
+    ///      *
+    ///      *
+    ///
     /// input:    The input string to parse into a StaticClassReference instance.
     /// parent:   The parent of the StaticClassReference node.
     /// location: The location of the input text in the source file.
@@ -28,6 +28,6 @@ class StaticClassReferenceParser extends IdentifierParser implements AccessibleP
     /// return:   The parsed StaticClassReference node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) =>
         parent.parentFile.imports.any({ _.className.equals(input) }) ?
-            new StaticClassReference(parent, location, input) :
+            StaticClassReference(parent, location, input) :
             null
 }

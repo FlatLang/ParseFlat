@@ -6,22 +6,22 @@ import "novex/astro/util/Location"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @Node extension that represents 
+/// @Node extension that represents
 ///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 [AutoFinal]
 class NovaDocCommentParser extends CommentParser {
     /// Parse the given input into a NovaDocComment node. If the input cannot be parsed
     /// into a NovaDocComment node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///      * 
-    ///      * 
-    ///      * 
-    /// 
+    ///      *
+    ///      *
+    ///      *
+    ///
     /// input:    The input string to parse into a NovaDocComment instance.
     /// parent:   The parent of the NovaDocComment node.
     /// location: The location of the input text in the source file.
@@ -32,27 +32,27 @@ class NovaDocCommentParser extends CommentParser {
         if (input.startsWith("///")) {
             let contents = input.substring(3)
             // let iterator = parent.parentFile.statements
-            
+
             // if ((let end = iterator.remainingSource.indexOf("*/")) > 0) {
             //     let contents = iterator.source.substring(iterator.startPosition, iterator.position + end)
-                
+
             //     iterator.skipForward(end + 2)
             //     iterator.beginsScope = false
             //     iterator.endsScope = false
-                
-                return new NovaDocComment(parent, location, contents)
+
+                return NovaDocComment(parent, location, contents)
             // }
         } else if (input.startsWith("/**")) {
             let iterator = parent.parentFile.statements
-            
+
             if ((let end = iterator.remainingSource.indexOf("*/")) > 0) {
                 let contents = iterator.source.substring(iterator.startPosition, iterator.position + end)
-                
+
                 iterator.skipForward(end + 2)
                 iterator.beginsScope = false
                 iterator.endsScope = false
-                
-                return new NovaDocComment(parent, location, contents)
+
+                return NovaDocComment(parent, location, contents)
             }
         }
     }

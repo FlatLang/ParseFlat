@@ -6,22 +6,22 @@ import "novex/astro/util/Location"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @TraitDeclaration extension that represents 
+/// @TraitDeclaration extension that represents
 ///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 [AutoFinal]
 class InterfaceDeclarationParser extends TraitDeclarationParser {
     /// Parse the given input into a InterfaceDeclaration node. If the input cannot be parsed
     /// into a InterfaceDeclaration node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///      * 
-    ///      * 
-    ///      * 
-    /// 
+    ///      *
+    ///      *
+    ///      *
+    ///
     /// input:    The input string to parse into a InterfaceDeclaration instance.
     /// parent:   The parent of the InterfaceDeclaration node.
     /// location: The location of the input text in the source file.
@@ -30,12 +30,12 @@ class InterfaceDeclarationParser extends TraitDeclarationParser {
     /// return:   The parsed InterfaceDeclaration node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> InterfaceDeclaration => null {
         let trait = TraitDeclaration.parse(input, "interface", parent, location, require)
-        
+
         if (trait) {
-            let node = new InterfaceDeclaration(parent, location)
-            
+            let node = InterfaceDeclaration(parent, location)
+
             trait.cloneTo(node)
-            
+
             return node
         }
     }

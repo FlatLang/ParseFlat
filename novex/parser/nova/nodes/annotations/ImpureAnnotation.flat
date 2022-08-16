@@ -8,33 +8,33 @@ import "novex/astro/util/Location"
 import "novex/astro/util/CompilerStringFunctions"
 
 /// @Annotation extension that represents
-/// 
+///
 /// author: Braden Steffaniak
 class ImpureAnnotation extends Annotation implements Modifier {
     visible static immutable String[] aliases => ["impure"]
-    
-    public static default() -> Modifier => new ImpureAnnotation()
+
+    public static default() -> Modifier => ImpureAnnotation()
     visible static immutable Class<Node>[] applicationTypes => [FunctionDeclaration, FieldDeclaration]
-    
+
     /// Create a new ImpureAnnotation node.
-    /// 
+    ///
     /// #exampleInputs
-    /// 
+    ///
     /// parent:   The parent of the ImpureAnnotation node.
     /// location: The location of the input text in the source file.
     public construct(Node parent = null, Location location = Location.INVALID) {
         super(parent, location)
     }
-    
+
     /// Parse the given input into a ImpureAnnotation node. If the input cannot be parsed
     /// into a ImpureAnnotation node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///     * 
-    ///     * 
-    ///     * 
-    /// 
+    ///     *
+    ///     *
+    ///     *
+    ///
     /// input:    The input string to parse into a ImpureAnnotation instance.
     /// parent:   The parent of the ImpureAnnotation node.
     /// location: The location of the input text in the source file.
@@ -43,8 +43,8 @@ class ImpureAnnotation extends Annotation implements Modifier {
     /// return:   The parsed ImpureAnnotation node, if successful; null otherwise.
     public static parse(String type, String parameters, Node parent = null, Location location = Location.INVALID, Bool require = true) -> ImpureAnnotation => null {
         if (type == "Impure" && parameters.count == 0) {
-            var node = new ImpureAnnotation(parent, location)
-            
+            var node = ImpureAnnotation(parent, location)
+
             return node
         }
     }

@@ -6,22 +6,22 @@ import "novex/astro/util/Location"
 
 import "novex/astro/util/CompilerStringFunctions"
 
-/// @ClassDeclaration extension that represents 
+/// @ClassDeclaration extension that represents
 ///
 /// author: Braden Steffaniak
-/// since: 
-/// version: 
+/// since:
+/// version:
 [AutoFinal]
 class TraitDeclarationParser extends ClassDeclarationParser {
     /// Parse the given input into a TraitDeclaration node. If the input cannot be parsed
     /// into a TraitDeclaration node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///      * 
-    ///      * 
-    ///      * 
-    /// 
+    ///      *
+    ///      *
+    ///      *
+    ///
     /// input:    The input string to parse into a TraitDeclaration instance.
     /// parent:   The parent of the TraitDeclaration node.
     /// location: The location of the input text in the source file.
@@ -30,12 +30,12 @@ class TraitDeclarationParser extends ClassDeclarationParser {
     /// return:   The parsed TraitDeclaration node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> TraitDeclaration => null {
         let class = ClassDeclarationParser.parse(input, "trait", parent, location, require)
-        
+
         if (class) {
-            let node = new TraitDeclaration(parent, location)
-            
+            let node = TraitDeclaration(parent, location)
+
             class.cloneTo(node)
-            
+
             return node
         }
     }

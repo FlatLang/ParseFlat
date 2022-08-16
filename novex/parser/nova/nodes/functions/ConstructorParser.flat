@@ -12,24 +12,24 @@ import "novex/astro/util/CompilerStringFunctions"
 
 class Constructor extends BodyFunction {
     /// Create a new Constructor node.
-    /// 
+    ///
     /// #exampleInputs
-    /// 
+    ///
     /// parent:   The parent of the Constructor node.
     /// location: The location of the input text in the source file.
     public construct(Node parent = null, Location location = Location.INVALID) {
         super(parent, location)
     }
-    
+
     /// Parse the given input into a Constructor node. If the input cannot be parsed
     /// into a Constructor node, null is returned.
-    /// 
+    ///
     /// #exampleInputs:
     ///     Example inputs:
-    ///      * 
-    ///      * 
-    ///      * 
-    /// 
+    ///      *
+    ///      *
+    ///      *
+    ///
     /// input:    The input string to parse into a Constructor instance.
     /// parent:   The parent of the Constructor node.
     /// location: The location of the input text in the source file.
@@ -38,24 +38,24 @@ class Constructor extends BodyFunction {
     /// return:   The parsed Constructor node, if successful; null otherwise.
     public static parse(String input, Node parent = null, Location location = Location.INVALID, Bool require = true) -> Constructor => null {
         var function = BodyFunction.parse(input, parent, location, require)
-        
+
         if (function) {
             if (function.name == "construct") {
-                var node = new Constructor(parent, location)
-                
+                var node = Constructor(parent, location)
+
                 node = (Constructor)function.cloneTo(node)
                 node.type = parent.parentClass.type
-                
+
                 return node
             }
         }
     }
-    
+
     /*public onAdded(Node parent) {
         super.onAdded(parent)
-        
-        parent.addChild(new InitializationFunction(this))
+
+        parent.addChild(InitializationFunction(this))
     }*/
-    
+
     public writeReturnType() => ""
 }
