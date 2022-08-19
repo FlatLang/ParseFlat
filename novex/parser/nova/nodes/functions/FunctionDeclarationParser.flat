@@ -1,17 +1,17 @@
-package "novex/parser/nova/nodes/functions"
+package novex/parser/nova/nodes/functions
 
-import "novex/astro/SyntaxMessage"
-import "novex/astro/InvalidParseException"
-import "novex/astro/tree/SyntaxTree"
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/tree/nodes/Type"
-import "novex/astro/tree/nodes/variables/InstanceDeclaration"
-import "novex/astro/tree/nodes/variables/VariableDeclaration"
-import "novex/astro/tree/nodes/generics/GenericParameter"
-import "novex/astro/tree/nodes/generics/GenericCompatible"
-import "novex/astro/util/Location"
+import novex/astro/SyntaxMessage
+import novex/astro/InvalidParseException
+import novex/astro/tree/SyntaxTree
+import novex/astro/tree/nodes/Node
+import novex/astro/tree/nodes/Type
+import novex/astro/tree/nodes/variables/InstanceDeclaration
+import novex/astro/tree/nodes/variables/VariableDeclaration
+import novex/astro/tree/nodes/generics/GenericParameter
+import novex/astro/tree/nodes/generics/GenericCompatible
+import novex/astro/util/Location
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 class FunctionDeclaration extends InstanceDeclaration implements CallableFunction, GenericCompatible {
     visible FunctionDeclaration parentFunction => this

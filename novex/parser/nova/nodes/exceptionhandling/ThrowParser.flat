@@ -1,12 +1,12 @@
-package "novex/parser/nova/nodes/exceptionhandling"
+package novex/parser/nova/nodes/exceptionhandling
 
-import "novex/astro/SyntaxErrorException"
-import "novex/astro/InvalidParseException"
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/tree/nodes/Value"
-import "novex/astro/util/Location"
+import novex/astro/SyntaxErrorException
+import novex/astro/InvalidParseException
+import novex/astro/tree/nodes/Node
+import novex/astro/tree/nodes/Value
+import novex/astro/util/Location
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 /// @Node extension that represents
 ///

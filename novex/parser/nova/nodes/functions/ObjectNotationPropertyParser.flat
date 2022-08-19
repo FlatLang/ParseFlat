@@ -1,17 +1,17 @@
-package "novex/parser/nova/nodes/functions"
+package novex/parser/nova/nodes/functions
 
-import "novex/astro/SyntaxErrorException"
-import "novex/astro/InvalidParseException"
-import "novex/astro/util/Location"
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/tree/nodes/Value"
-import "novex/astro/tree/nodes/NodeList"
-import "novex/astro/tree/nodes/variables/VariableDeclaration"
-import "novex/astro/tree/nodes/variables/Variable"
-import "novex/astro/tree/nodes/operations/Assignment"
-import "novex/astro/tree/nodes/operations/Operator"
+import novex/astro/SyntaxErrorException
+import novex/astro/InvalidParseException
+import novex/astro/util/Location
+import novex/astro/tree/nodes/Node
+import novex/astro/tree/nodes/Value
+import novex/astro/tree/nodes/NodeList
+import novex/astro/tree/nodes/variables/VariableDeclaration
+import novex/astro/tree/nodes/variables/Variable
+import novex/astro/tree/nodes/operations/Assignment
+import novex/astro/tree/nodes/operations/Operator
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 /// @Assignment extension that represents
 ///

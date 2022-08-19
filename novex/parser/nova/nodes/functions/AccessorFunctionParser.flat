@@ -1,12 +1,12 @@
-package "novex/parser/nova/nodes/functions"
+package novex/parser/nova/nodes/functions
 
-import "novex/astro/InvalidParseException"
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/tree/nodes/Scope"
-import "novex/astro/util/Location"
-import "novex/astro/SyntaxMessage"
+import novex/astro/InvalidParseException
+import novex/astro/tree/nodes/Node
+import novex/astro/tree/nodes/Scope
+import novex/astro/util/Location
+import novex/astro/SyntaxMessage
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 class AccessorFunction extends PropertyFunction {
     /// Create a new AccessorFunction node.

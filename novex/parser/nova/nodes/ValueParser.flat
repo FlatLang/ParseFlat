@@ -1,22 +1,22 @@
-package "novex/parser/nova/nodes"
+package novex/parser/nova/nodes
 
-import "nova/datastruct/Tuple2"
+import nova/datastruct/Tuple2
 
-import "novex/astro/SyntaxMessage"
-import "novex/astro/InvalidParseException"
-import "novex/astro/util/Location"
-import "novex/astro/tree/nodes/arrays/ArrayAccess"
-import "novex/astro/tree/nodes/operations/Operation"
-import "novex/astro/tree/nodes/operations/UnaryOperation"
-import "novex/astro/tree/nodes/operations/TernaryOperation"
-import "novex/astro/tree/nodes/operations/ElvisOperation"
-import "novex/astro/tree/nodes/operations/Assignable"
-import "novex/astro/tree/nodes/variables/Variable"
-import "novex/astro/tree/nodes/functions/FunctionCall"
-import "novex/astro/tree/nodes/functions/ArrayInstantiation"
-import "novex/astro/tree/nodes/functions/Instantiation"
+import novex/astro/SyntaxMessage
+import novex/astro/InvalidParseException
+import novex/astro/util/Location
+import novex/astro/tree/nodes/arrays/ArrayAccess
+import novex/astro/tree/nodes/operations/Operation
+import novex/astro/tree/nodes/operations/UnaryOperation
+import novex/astro/tree/nodes/operations/TernaryOperation
+import novex/astro/tree/nodes/operations/ElvisOperation
+import novex/astro/tree/nodes/operations/Assignable
+import novex/astro/tree/nodes/variables/Variable
+import novex/astro/tree/nodes/functions/FunctionCall
+import novex/astro/tree/nodes/functions/ArrayInstantiation
+import novex/astro/tree/nodes/functions/Instantiation
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 class ValueParser extends NodeParser {
     /// Parse the given input into a Value node. If the input cannot be parsed

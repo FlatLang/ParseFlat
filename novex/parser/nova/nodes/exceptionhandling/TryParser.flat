@@ -1,14 +1,14 @@
-package "novex/parser/nova/nodes/exceptionhandling"
+package novex/parser/nova/nodes/exceptionhandling
 
-import "novex/astro/SyntaxErrorException"
-import "novex/astro/InvalidParseException"
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/tree/nodes/Type"
-import "novex/astro/tree/nodes/Scope"
-import "novex/astro/tree/nodes/ScopeDeclaration"
-import "novex/astro/util/Location"
+import novex/astro/SyntaxErrorException
+import novex/astro/InvalidParseException
+import novex/astro/tree/nodes/Node
+import novex/astro/tree/nodes/Type
+import novex/astro/tree/nodes/Scope
+import novex/astro/tree/nodes/ScopeDeclaration
+import novex/astro/util/Location
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 /// ExceptionHandler extension that represents the declaration of a
 /// try node type. See {@link #decodeStatement(Node, String, Location, boolean)}

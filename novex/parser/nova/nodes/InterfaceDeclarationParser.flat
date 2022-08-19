@@ -1,10 +1,10 @@
-package "novex/parser/nova/nodes"
+package novex/parser/nova/nodes
 
-import "novex/astro/SyntaxErrorException"
-import "novex/astro/InvalidParseException"
-import "novex/astro/util/Location"
+import novex/astro/SyntaxErrorException
+import novex/astro/InvalidParseException
+import novex/astro/util/Location
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 /// @TraitDeclaration extension that represents
 ///

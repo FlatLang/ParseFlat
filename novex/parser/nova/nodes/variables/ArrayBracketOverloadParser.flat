@@ -1,13 +1,13 @@
-package "novex/parser/nova/nodes/variables"
+package novex/parser/nova/nodes/variables
 
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/tree/nodes/Identifier"
-import "novex/astro/tree/nodes/functions/BodyFunction"
-import "novex/astro/tree/nodes/variables/LocalDeclaration"
-import "novex/astro/SyntaxErrorException"
-import "novex/astro/util/Location"
+import novex/astro/tree/nodes/Node
+import novex/astro/tree/nodes/Identifier
+import novex/astro/tree/nodes/functions/BodyFunction
+import novex/astro/tree/nodes/variables/LocalDeclaration
+import novex/astro/SyntaxErrorException
+import novex/astro/util/Location
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 class ArrayBracketOverload extends Node {
     visible LocalDeclaration index

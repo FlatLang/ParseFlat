@@ -1,16 +1,16 @@
-package "novex/parser/nova/nodes/functions"
+package novex/parser/nova/nodes/functions
 
-import "novex/astro/InvalidParseException"
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/tree/nodes/ScopeDeclaration"
-import "novex/astro/tree/nodes/Type"
-import "novex/astro/tree/nodes/Scope"
-import "novex/astro/tree/nodes/Return"
-import "novex/astro/tree/nodes/Value"
-import "novex/astro/util/Location"
-import "novex/astro/SyntaxMessage"
+import novex/astro/InvalidParseException
+import novex/astro/tree/nodes/Node
+import novex/astro/tree/nodes/ScopeDeclaration
+import novex/astro/tree/nodes/Type
+import novex/astro/tree/nodes/Scope
+import novex/astro/tree/nodes/Return
+import novex/astro/tree/nodes/Value
+import novex/astro/util/Location
+import novex/astro/SyntaxMessage
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 class BodyFunction extends FunctionDeclaration implements ScopeDeclaration {
     visible Node inlineBody

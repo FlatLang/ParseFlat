@@ -1,14 +1,14 @@
-package "novex/parser/nova/nodes/controlstructures/loops"
+package novex/parser/nova/nodes/controlstructures/loops
 
-import "novex/astro/SyntaxErrorException"
-import "novex/astro/InvalidParseException"
-import "novex/astro/util/Location"
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/tree/nodes/Scope"
-import "novex/astro/tree/nodes/Value"
-import "novex/astro/tree/nodes/controlstructures/ControlStructure"
+import novex/astro/SyntaxErrorException
+import novex/astro/InvalidParseException
+import novex/astro/util/Location
+import novex/astro/tree/nodes/Node
+import novex/astro/tree/nodes/Scope
+import novex/astro/tree/nodes/Value
+import novex/astro/tree/nodes/controlstructures/ControlStructure
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 /// @Loop extension that represents
 ///

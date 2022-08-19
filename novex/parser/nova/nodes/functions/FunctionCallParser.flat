@@ -1,18 +1,18 @@
-package "novex/parser/nova/nodes/functions"
+package novex/parser/nova/nodes/functions
 
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/tree/nodes/Value"
-import "novex/astro/tree/nodes/variables/Variable"
-import "novex/astro/tree/nodes/variables/VariableDeclaration"
-import "novex/astro/tree/nodes/functions/closures/ClosureDeclaration"
-import "novex/astro/tree/nodes/functions/closures/LambdaExpression"
-import "novex/astro/tree/nodes/ClassDeclaration"
-import "novex/astro/SyntaxErrorException"
-import "novex/astro/InvalidParseException"
-import "novex/astro/util/Location"
-import "novex/astro/tree/nodes/Accessible"
+import novex/astro/tree/nodes/Node
+import novex/astro/tree/nodes/Value
+import novex/astro/tree/nodes/variables/Variable
+import novex/astro/tree/nodes/variables/VariableDeclaration
+import novex/astro/tree/nodes/functions/closures/ClosureDeclaration
+import novex/astro/tree/nodes/functions/closures/LambdaExpression
+import novex/astro/tree/nodes/ClassDeclaration
+import novex/astro/SyntaxErrorException
+import novex/astro/InvalidParseException
+import novex/astro/util/Location
+import novex/astro/tree/nodes/Accessible
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 /// @Variable extension that represents
 ///

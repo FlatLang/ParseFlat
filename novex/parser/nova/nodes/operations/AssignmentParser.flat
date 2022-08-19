@@ -1,16 +1,16 @@
-package "novex/parser/nova/nodes/operations"
+package novex/parser/nova/nodes/operations
 
-import "novex/astro/SyntaxMessage"
-import "novex/astro/tree/nodes/Value"
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/tree/nodes/Type"
-import "novex/astro/tree/nodes/variables/LocalDeclaration"
-import "novex/astro/tree/nodes/variables/Variable"
-import "novex/astro/tree/nodes/variables/ImplicitDeclaration"
-import "novex/astro/tree/nodes/variables/VariableDeclaration"
-import "novex/astro/util/Location"
+import novex/astro/SyntaxMessage
+import novex/astro/tree/nodes/Value
+import novex/astro/tree/nodes/Node
+import novex/astro/tree/nodes/Type
+import novex/astro/tree/nodes/variables/LocalDeclaration
+import novex/astro/tree/nodes/variables/Variable
+import novex/astro/tree/nodes/variables/ImplicitDeclaration
+import novex/astro/tree/nodes/variables/VariableDeclaration
+import novex/astro/util/Location
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 class Assignment extends Operation {
     public Value assigned <=> operands[0]

@@ -1,9 +1,9 @@
-package "novex/parser/nova/nodes/arrays"
+package novex/parser/nova/nodes/arrays
 
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/tree/nodes/Value"
-import "novex/astro/SyntaxErrorException"
-import "novex/astro/util/Location"
+import novex/astro/tree/nodes/Node
+import novex/astro/tree/nodes/Value
+import novex/astro/SyntaxErrorException
+import novex/astro/util/Location
 
 /// @Node extension that keeps track of any time an array is being accessed.
 /// For example, the statement: "[34]" is an array access. The previous code

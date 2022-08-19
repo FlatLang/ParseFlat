@@ -1,11 +1,11 @@
-package "novex/parser/nova/nodes/annotations"
+package novex/parser/nova/nodes/annotations
 
-import "nova/datastruct/HashMap"
-import "nova/datastruct/ImmutableHashMap"
+import nova/datastruct/HashMap
+import nova/datastruct/ImmutableHashMap
 
-import "novex/astro/InvalidParseException"
-import "novex/astro/SyntaxErrorException"
-import "novex/astro/tree/nodes/Node"
+import novex/astro/InvalidParseException
+import novex/astro/SyntaxErrorException
+import novex/astro/tree/nodes/Node
 
 trait Modifier extends Annotation {
     visible static final immutable HashMap<String, Class<Modifier>> MODIFIERS

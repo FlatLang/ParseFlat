@@ -1,13 +1,13 @@
-package "novex/parser/nova/nodes/operations"
+package novex/parser/nova/nodes/operations
 
-import "novex/astro/SyntaxErrorException"
-import "novex/astro/InvalidParseException"
-import "novex/astro/SyntaxMessage"
-import "novex/astro/tree/nodes/Value"
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/util/Location"
+import novex/astro/SyntaxErrorException
+import novex/astro/InvalidParseException
+import novex/astro/SyntaxMessage
+import novex/astro/tree/nodes/Value
+import novex/astro/tree/nodes/Node
+import novex/astro/util/Location
 
-import "novex/astro/util/CompilerStringFunctions"
+import novex/astro/util/CompilerStringFunctions
 
 class Operation extends Value {
     visible Operator[] operators

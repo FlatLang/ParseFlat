@@ -1,15 +1,15 @@
-package "novex/parser/nova/nodes/operations"
+package novex/parser/nova/nodes/operations
 
-import "novex/astro/tree/nodes/Node"
-import "novex/astro/util/Location"
+import novex/astro/tree/nodes/Node
+import novex/astro/util/Location
 
 class Operator extends Node {
     public String value
-    
+
     // Logical operators
     visible static String AND = "&&"
     visible static String OR  = "||"
-    
+
     // Math operators
     visible static String DIVIDE             = "/"
     visible static String MULTIPLY           = "*"
@@ -34,7 +34,7 @@ class Operator extends Node {
     visible static String R_SHIFT            = ">>"
     visible static String UR_SHIFT           = ">>>"
     visible static String SAFE_NAVIGATION    = "?."
-    
+
     visible static String SHORTHAND_DIVIDE             = "/="
     visible static String SHORTHAND_MULTIPLY           = "*="
     visible static String SHORTHAND_MODULO             = "%="
@@ -46,7 +46,7 @@ class Operator extends Node {
     visible static String SHORTHAND_L_SHIFT            = "<<="
     visible static String SHORTHAND_R_SHIFT            = ">>="
     visible static String SHORTHAND_UR_SHIFT           = ">>>="
-    
+
     visible static String[] OPERATORS = [ SHORTHAND_ADD, SHORTHAND_SUBTRACT, SHORTHAND_MULTIPLY,
                                           SHORTHAND_DIVIDE, SHORTHAND_MODULO, SHORTHAND_L_SHIFT,
                                           SHORTHAND_R_SHIFT, SHORTHAND_BITWISE_AND, SHORTHAND_BITWISE_OR,
@@ -55,11 +55,11 @@ class Operator extends Node {
                                           L_SHIFT, UR_SHIFT, R_SHIFT, GREATER_EQ, LESS_EQ, GREATER, LESS,
                                           BITWISE_AND, BITWISE_OR, BITWISE_XOR, BITWISE_COMPLEMENT,
                                           SAFE_NAVIGATION ]
-    
+
     visible static String[] UNARY_OPERATORS          = [ BANG, INCREMENT, DECREMENT, SUBTRACT, BITWISE_COMPLEMENT ]
     visible static String[] UNARY_OPERATORS_NO_MINUS = [ BANG, INCREMENT, DECREMENT, BITWISE_COMPLEMENT ]
     visible static String[] MINUS                    = [ SUBTRACT ]
-    
+
     visible static String[] BINARY_OPERATORS = [ SHORTHAND_ADD, SHORTHAND_SUBTRACT, SHORTHAND_MULTIPLY,
                                                  SHORTHAND_DIVIDE, SHORTHAND_MODULO, SHORTHAND_L_SHIFT,
                                                  SHORTHAND_R_SHIFT, SHORTHAND_BITWISE_AND, SHORTHAND_BITWISE_OR,
@@ -67,50 +67,50 @@ class Operator extends Node {
                                                  EQUALS, NOT_EQUAL, ASSIGN, GREATER_EQ, LESS_EQ, L_SHIFT,
                                                  UR_SHIFT, R_SHIFT, GREATER, LESS, BITWISE_AND, BITWISE_OR,
                                                  BITWISE_XOR ]
-    
+
     visible static String[] LOGICAL_OPERATORS = [ SHORTHAND_ADD, SHORTHAND_SUBTRACT, SHORTHAND_MULTIPLY,
                                                   SHORTHAND_DIVIDE, SHORTHAND_MODULO, SHORTHAND_L_SHIFT,
                                                   SHORTHAND_R_SHIFT, SHORTHAND_BITWISE_AND, SHORTHAND_BITWISE_OR,
                                                   AND, OR, DIVIDE, MULTIPLY, MODULO, ADD, SUBTRACT,
                                                   EQUALS, NOT_EQUAL, GREATER_EQ, LESS_EQ, L_SHIFT,
-                                                  UR_SHIFT, R_SHIFT, GREATER, LESS, BITWISE_AND, BITWISE_OR, 
+                                                  UR_SHIFT, R_SHIFT, GREATER, LESS, BITWISE_AND, BITWISE_OR,
                                                   BITWISE_XOR, BITWISE_COMPLEMENT ]
-                                                                
+
     visible static String[] SHORTHAND_OPERATORS = [ SHORTHAND_ADD, SHORTHAND_SUBTRACT, SHORTHAND_MULTIPLY,
                                                     SHORTHAND_DIVIDE, SHORTHAND_MODULO, SHORTHAND_L_SHIFT,
                                                     SHORTHAND_R_SHIFT, SHORTHAND_BITWISE_AND, SHORTHAND_BITWISE_OR,
                                                     SHORTHAND_UR_SHIFT, SHORTHAND_BITWISE_XOR ]
-                                                    
+
     visible static Char[] OPERATOR_SYMBOLS = new Char[]
     visible static Char[] UNARY_OPERATOR_CHARS = new Char[]
-    
+
     static {
         for (operator in OPERATORS) {
             for (c in operator.chars.toCharArray()) {
                 OPERATOR_SYMBOLS.addUnique(c)
             }
         }
-        
+
         for (unary in UNARY_OPERATORS) {
             for (c in unary.chars.toCharArray()) {
                 UNARY_OPERATOR_CHARS.addUnique(c)
             }
         }
     }
-    
+
     /*public isBoolOperator() =>
         [EQUALS, NOT_EQUAL, BANG, AND, OR, LESS, GREATER, LESS_EQ, GREATER_EQ].contains(operator)*/
-    
+
     /// Create a new Operater node.
-    /// 
+    ///
     /// parent:   The parent of the Operater node.
     /// location: The location of the input text in the source file.
     /// value: The operator to set as the initial value
     public construct(Node parent = null, Location location = Location.INVALID, String value = null) {
         super(parent, location)
-        
+
         this.value = value
     }
-    
+
     public writeNova() => value
 }
