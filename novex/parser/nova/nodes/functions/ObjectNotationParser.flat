@@ -15,21 +15,21 @@ import novex/astro/util/CompilerStringFunctions
 /// since:
 /// version:
 class ObjectNotation extends NodeList {
-    /// Create a new ObjectNotation node.
-    ///
-    /// #exampleInputs
-    ///
-    /// parent:   The parent of the ObjectNotation node.
-    /// location: The location of the input text in the source file.
-    public construct(Node parent = null, Location location = Location.INVALID) {
-        super(parent, location)
-    }
+        /// Create a new ObjectNotation node.
+        ///
+        /// #exampleInputs
+        ///
+        /// parent:     The parent of the ObjectNotation node.
+        /// location: The location of the input text in the source file.
+        public construct(Node parent = null, Location location = Location.INVALID) {
+                super(parent, location)
+        }
 
-    public writeChildren() =>
-        children.count > 0 ?
-            "\n" + children.map({ _.toNova() + "\n" }).join() :
-            ""
+        public writeChildren() =>
+                children.count > 0 ?
+                        "\n" + children.map({ _.toNova() + "\n" }).join() :
+                        ""
 
-    public writeNova() =>
-        "{" + writeChildren() + "}"
+        public writeNova() =>
+                "{" + writeChildren() + "}"
 }
